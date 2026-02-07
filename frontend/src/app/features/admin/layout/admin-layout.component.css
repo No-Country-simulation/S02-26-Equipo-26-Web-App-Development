@@ -1,0 +1,46 @@
+
+.admin-shell {
+  display: flex;
+  height: 100vh;        
+  overflow: hidden;
+}
+
+.admin-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;    
+}
+
+.admin-main {
+  flex: 1;                 
+  overflow-y: auto;        
+  overflow-x: hidden;
+  padding: 24px;
+  min-height: 0; 
+   background: linear-gradient(135deg, #dae0f0 0%, #f7f7e6 100%);
+   animation: gradient 15s ease infinite;  
+}
+
+.admin-shell.sidebar-collapsed .admin-content {
+  margin-left: 0;
+}
+
+.sidebar-toggle {
+  position: absolute;  
+  top: 16px;
+  right: -14px;
+  width: 28px;
+  height: 48px;
+  border-radius: 0 6px 6px 0;
+  background: #1e1e1e;
+  color: #d4af37;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+.admin-shell.sidebar-collapsed .sidebar-toggle {
+  left: 0;
+}

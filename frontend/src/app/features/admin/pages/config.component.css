@@ -1,0 +1,25 @@
+.config-container {
+   margin-top: 3rem;
+    text-align: center;
+   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 3rem;
+  text-align: center;
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.page-subtitle {
+  color: #64748b;
+}
+
+.card {
+  background: white;
+  padding: 16px;
+  border-radius: 12px;
+}

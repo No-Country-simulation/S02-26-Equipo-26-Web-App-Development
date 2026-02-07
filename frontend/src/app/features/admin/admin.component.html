@@ -1,0 +1,162 @@
+<div class="dashboard-container">
+  <header class="page-header">
+    <h1 class="page-title">Dashboard</h1>
+    <div class="date-filter"></div>
+  </header>
+
+  <div class="stats-grid">
+    <div class="stat-card" *ngFor="let stat of stats" [ngClass]="stat.color">
+      <div class="stat-icon">
+        <span class="material-icons">{{ stat.icon }}</span>
+      </div>
+      <div class="stat-info">
+        <span class="stat-label">{{ stat.label }}</span>
+        <span class="stat-value">{{ stat.value }}</span>
+      </div>
+      <div class="stat-chart-mini">
+        <svg viewBox="0 0 100 25" class="sparkline">
+          <path
+            d="M0 20 Q 20 5 40 15 T 80 10 T 100 15"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-main-grid">
+    <div class="left-column">
+      <div class="card metrics-card">
+        <div class="card-header">
+          <h3>Métricas de Gestión</h3>
+          <button class="btn-link">Métricas 30 días ></button>
+        </div>
+        <div class="chart-box">
+          <svg width="100%" height="200" viewBox="0 0 500 200">
+            <path
+              d="M0 150 C 100 100 150 180 250 120 S 350 50 500 80"
+              stroke="#3b82f6"
+              stroke-width="3"
+              fill="none"
+            />
+            <path
+              d="M0 180 C 100 160 150 190 250 150 S 350 120 500 140"
+              stroke="#10b981"
+              stroke-width="3"
+              fill="none"
+            />
+            <circle cx="250" cy="120" r="4" fill="#3b82f6" />
+            <circle cx="250" cy="150" r="4" fill="#10b981" />
+          </svg>
+          <div class="chart-legend">
+            <span><span class="dot blue"></span> Ingresos</span>
+            <span><span class="dot green"></span> Gastos</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card table-card">
+        <div class="card-header">
+          <h3>Solicitudes de Validación</h3>
+          <div class="filters">
+            <select>
+              <option>Cuentas</option>
+            </select>
+          </div>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Documento</th>
+              <th>Descripción</th>
+              <th>Valor</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of validationRequests">
+              <td>
+                <div class="user-cell">
+                  <div class="avatar-xs"></div>
+                  {{ item.name }}
+                </div>
+              </td>
+              <td>{{ item.doc }}</td>
+              <td class="font-bold">{{ item.value }}</td>
+              <td>
+                <span class="badge" [ngClass]="item.status">{{
+                  item.status
+                }}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card table-card">
+        <div class="card-header">
+          <h3>Pagos Recientes</h3>
+        </div>
+        <div class="list-items">
+          <div class="list-item" *ngFor="let pay of recentPayments">
+            <div class="user-cell">
+              <img src="assets/user-placeholder.png" class="avatar-sm" />
+              <span>{{ pay.name }}</span>
+            </div>
+            <span class="amount-tag">{{ pay.amount }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-column">
+      <div class="card actions-card">
+        <h3>Pagos (Items faltantes)</h3>
+        <div class="action-buttons">
+          <button class="btn btn-primary full-width">
+            <span class="material-icons">add</span> Registrar Guardia
+          </button>
+          <button class="btn btn-outline full-width">
+            <span class="material-icons">fact_check</span> Verificar Documentos
+          </button>
+        </div>
+      </div>
+
+      <div class="card payments-card">
+        <div class="card-header">
+          <h3>Pagos Recientes</h3>
+        </div>
+        <div class="payment-list">
+          <div class="payment-item">
+            <div class="pay-info">
+              <div class="avatar-sm">AM</div>
+              <div>
+                <div class="pay-name">Ana Martínez</div>
+                <div class="pay-sub">Transferencia</div>
+              </div>
+            </div>
+            <div class="pay-amount">$245.70</div>
+          </div>
+          <div class="payment-item">
+            <div class="pay-info">
+              <div class="avatar-sm">JP</div>
+              <div>
+                <div class="pay-name">Jose Perez</div>
+                <div class="pay-sub">Recibo</div>
+              </div>
+            </div>
+            <div class="pay-amount">$8,112.00</div>
+          </div>
+
+          <div class="bank-item">
+            <span class="material-icons bank-icon">account_balance</span>
+            <span>Banco Nación</span>
+            <span class="bank-amount green">$465.70</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

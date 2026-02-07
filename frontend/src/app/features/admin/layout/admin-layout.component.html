@@ -1,0 +1,30 @@
+<div class="admin-shell">
+
+  <app-admin-sidebar
+    [collapsed]="isSidebarCollapsed"
+    (navigate)="isSidebarCollapsed = true">
+  </app-admin-sidebar>
+
+  <button class="sidebar-toggle" (click)="toggleSidebar()">
+    <span class="material-icons">
+      {{ isSidebarCollapsed ? 'chevron_right' : 'chevron_left' }}
+    </span>
+  </button>
+
+  <div class="admin-content">
+    <app-admin-topbar (menuClick)="toggleSidebar()"></app-admin-topbar>
+
+    <main class="admin-main">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+<a
+  class="whatsapp-fab"
+  href="https://wa.me/5493415109918"
+  target="_blank"
+  rel="noopener"
+  aria-label="WhatsApp"
+>
+  <img src="assets/whatsapp.svg" alt="WhatsApp" />
+</a>
+</div>

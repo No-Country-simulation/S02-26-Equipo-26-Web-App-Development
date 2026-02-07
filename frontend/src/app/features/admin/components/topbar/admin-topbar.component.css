@@ -1,0 +1,90 @@
+:host {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  z-index: 300;
+  background: #e0e4f0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  height: 100%;
+}
+
+.left-section,
+.right-section {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.menu-btn,
+.icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #202429;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+     color: #1b191a; 
+    transition: transform 0.2s ease-in-out; 
+    display: inline-block; 
+}
+
+.material-icons {
+    font-size: 2.8rem;
+}
+.menu-btn:hover,
+.badge:hover {
+  transform: scale(0.9); 
+  cursor: pointer; 
+}
+
+
+.icon-btn .badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background-color: #ef4444;
+    color: white;
+    font-size: 0.65rem;
+    padding: 2px 5px;
+    border-radius: 10px;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+.user-profile:hover {
+    background-color: #f1f5f9;
+}
+
+.avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #cbd5e1;
+    object-fit: cover;
+}
+
+.user-name {
+    font-weight: 500;
+    color: #334155;
+    font-size: 0.95rem;
+}
