@@ -16,11 +16,9 @@ export default function App() {
       </button>
 
       {/* Modal */}
-      <ModalRegistroNuevo
-        isOpen={open}
-        onClose={() => setOpen(false)}
-      >
-      </ModalRegistroNuevo>
+<ModalRegistroNuevo isOpen={open} onClose={() => setOpen(false)}>
+
+</ModalRegistroNuevo>
     </MainLayout>
   )
 }
