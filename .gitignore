@@ -1,3 +1,13 @@
 .vscode/
 *.log
 *.tmp
+
+# Database specific
+*.backup
+*.dump
+*.sql.bak
+
+# Environment and System
+.env
+.DS_Store
+Thumbs.db
