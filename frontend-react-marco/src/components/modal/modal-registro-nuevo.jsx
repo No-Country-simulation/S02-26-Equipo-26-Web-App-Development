@@ -5,10 +5,28 @@ import StepDatosPersonales from "../ui/step-datos-personales"
 import StepDatosProfesionales from "../ui/step-datos-profesionales"
 import StepDatosBancarios from "../ui/step-datos-bancarios"
 import StepDocumentacion from "../ui/step-documentos"
+import ModalFooter from "../ui/inputs/footer-modal"
 
 export default function ModalRegistroNuevo({ isOpen, onClose, children }) {
   const [currentStep, setCurrentStep] = useState(1)
   if (!isOpen) return null
+
+  const totalSteps = 4
+
+  const handleNext = () => {
+    if (currentStep < totalSteps) {
+      setCurrentStep(currentStep + 1)
+    }
+  }
+
+  const handleCancel = () => {
+    onClose()
+  }
+
+  const handleSave = () => {
+    console.log("Guardar cambios")
+    onClose()
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"> 
@@ -46,34 +64,16 @@ export default function ModalRegistroNuevo({ isOpen, onClose, children }) {
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between border-t px-6 py-4">
-          {/* Botón Cancelar */}
-          <button
-            onClick={onClose}
-            className="rounded-md border px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-          >
-            Cancelar
-          </button>
-          {/* Botones de acción */}
-          <div className="flex gap-3">
-            {currentStep < 4 && (
-              <button
-                onClick={() => setCurrentStep((prev) => prev + 1)}
-                className="rounded-md bg-yellow-400 px-6 py-2 text-sm font-medium text-black hover:bg-yellow-500 transition"
-              >
-                Siguiente
-              </button>
-            )}
-
-            {currentStep === 4 && (
-              <button
-                className="flex items-center gap-2 rounded-md bg-green-600 px-6 py-2 text-sm font-medium text-white hover:bg-green-700 transition"
-              >
-                Guardar cambios
-              </button>
-            )}
-          </div>
+        <div className="px-6 pb-6">
+          <ModalFooter
+            currentStep={currentStep}
+            totalSteps={totalSteps}
+            onCancel={handleCancel}
+            onNext={handleNext}
+            onSave={handleSave}
+          />
         </div>
+        
 
           
       </div>

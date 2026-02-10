@@ -13,40 +13,33 @@ export default function StepDocumentos() {
 
       {/* Grid de uploads */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <FileUpload
-          label="DNI (Frente)"
-          required
-          helper="PDF, JPG o PNG hasta 5MB"
-        />
+  <FileUpload
+    label="DNI (Frente)"
+    required
+    helper="PDF, JPG o PNG hasta 5MB"
+    accept="application/pdf,image/png,image/jpeg"
+  />
 
-        <FileUpload
-          label="DNI (Dorso)"
-          required
-          helper="PDF, JPG o PNG hasta 5MB"
-        />
+  <FileUpload
+    label="DNI (Dorso)"
+    required
+    helper="PDF, JPG o PNG hasta 5MB"
+    accept="application/pdf,image/png,image/jpeg"
+  />
 
-        <FileUpload
-          label="Certificado de Antecedentes"
-          required
-          helper="PDF hasta 5MB"
-        />
+  <FileUpload
+    label="Certificado de Antecedentes"
+    required
+    helper="PDF hasta 5MB"
+    accept="application/pdf"
+  />
 
-        <FileUpload
-          label="Curriculum Vitae"
-          helper="PDF hasta 5MB"
-        />
-      </div>
-
-      {/* Documentos cargados */}
-      <div className="space-y-2">
-        <p className="text-sm font-medium text-gray-700">
-          Documentos cargados
-        </p>
-
-        <div className="rounded-lg border bg-gray-50 px-4 py-3 text-sm text-gray-500">
-          No hay documentos cargados aún
-        </div>
-      </div>
+  <FileUpload
+    label="Curriculum Vitae"
+    helper="PDF hasta 5MB"
+    accept="application/pdf"
+  />
+</div>
     </div>
   )
 }

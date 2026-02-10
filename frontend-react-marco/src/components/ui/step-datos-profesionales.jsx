@@ -1,4 +1,4 @@
-import Input from "./inputs/Input";
+import Input from "./inputs/input";
 import Select from "./inputs/Select";
 
 const turnosOptions = [

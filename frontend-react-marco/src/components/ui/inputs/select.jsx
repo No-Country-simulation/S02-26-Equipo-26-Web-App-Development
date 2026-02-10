@@ -12,7 +12,7 @@ export default function Select({
         </label>
       )}
 
-      <select className="h-10 rounded-md border border-gray-300 px-3 text-sm focus:border-yellow-400 focus:outline-none">
+      <select className="h-10 rounded-md border border-gray-300 px-3 text-sm text-gray-700 focus:border-yellow-400 focus:outline-none">
         <option value="">{placeholder}</option>
 
         {options.map((opt) => (

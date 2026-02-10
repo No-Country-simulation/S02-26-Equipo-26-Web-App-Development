@@ -1,5 +1,7 @@
 import Input from "./inputs/Input";
 import Select from "./inputs/Select";
+import { Upload } from "lucide-react";
+import { useRef } from "react";
 
 const generoOptions = [
   { value: "masculino", label: "Masculino" },
@@ -10,33 +12,64 @@ const generoOptions = [
 ];
 
 export default function StepDatosPersonales() {
+    const fileInputRef = useRef(null);
+
+  const handleClick = () => {
+    fileInputRef.current.click();
+  };
   return (
     <div className="space-y-6">
       {/* Foto */}
-      <div className="flex items-center gap-6">
-        <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center">
-          <span className="text-gray-400 text-sm">Foto</span>
-        </div>
+<div className="flex items-center gap-6 pb-6">
 
-        <div>
-          <p className="text-sm font-medium">Foto de perfil</p>
-          <p className="text-xs text-gray-500">
-            JPG o PNG. Máximo 2MB.
-          </p>
+  {/* FOTO CIRCULAR MÁS GRANDE */}
+  <div className="w-32 h-32 rounded-full bg-gray-100  flex items-center justify-center overflow-hidden">
+    <span className="text-gray-400 text-sm">Sin foto</span>
+  </div>
 
-          <button className="mt-2 px-4 py-1.5 border rounded-md text-sm hover:bg-gray-50">
-            Subir foto
-          </button>
-        </div>
-      </div>
+  {/* INFO + BOTÓN */}
+  <div>
+    <p className="text-sm font-medium text-gray-800">
+      Foto de perfil
+    </p>
+
+    <p className="text-xs text-gray-500 mb-3">
+      JPG o PNG. Máximo 2MB.
+    </p>
+
+    <button
+      type="button"
+      onClick={handleClick}
+      className="px-4 py-2 text-sm font-medium rounded-md  border border-gray-300 hover:bg-gray-50 transition"
+    >
+      Subir foto
+      <Upload size={16} className="inline-block ml-2" />
+    </button>
+
+    <input
+      type="file"
+      accept="image/png, image/jpeg"
+      ref={fileInputRef}
+      className="hidden"
+    />
+  </div>
+
+</div>
+  {/* Input oculto */}
+  <input
+    type="file"
+    accept="image/png, image/jpeg"
+    ref={fileInputRef}
+    className="hidden"
+  />
 
       {/* Form */}
       <div className="grid grid-cols-2 gap-4">
-        <Input label="Nombre *" placeholder="Ingrese nombre" />
-        <Input label="Apellido *" placeholder="Ingrese apellido" />
+        <Input label="Nombre" placeholder="Ingrese nombre" required />
+        <Input label="Apellido" placeholder="Ingrese apellido" required />
 
-        <Input label="DNI *" placeholder="XX.XXX.XXX" />
-        <Input label="Fecha de nacimiento *" type="date" />
+        <Input label="DNI" placeholder="XX.XXX.XXX" required/>
+        <Input label="Fecha de nacimiento" type="date" required />
 
       <Select
         label="Género"
@@ -44,19 +77,21 @@ export default function StepDatosPersonales() {
         options={generoOptions}
       />
 
-        <Input label="Teléfono *" placeholder="+54 9 11 XXXX-XXXX" />
+        <Input label="Teléfono" placeholder="+54 9 11 XXXX-XXXX" />
 
         <Input
-          label="Email *"
+          label="Email"
           placeholder="ejemplo@email.com"
           type="email"
           colSpan
+          required
         />
 
         <Input
-          label="Dirección *"
+          label="Dirección "
           placeholder="Calle, número, piso, depto"
           colSpan
+          required
         />
 
         <Input label="Ciudad" placeholder="Ciudad" />

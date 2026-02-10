@@ -1,13 +1,15 @@
 export default function Input({
   label,
+  required,
   placeholder,
   type = "text",
   colSpan = false,
 }) {
   return (
     <div className={colSpan ? "col-span-2" : ""}>
-      <label className="block mb-1 text-sm font-medium">
+      <label className="text-sm font-medium text-gray-700">
         {label}
+        {required && <span className="text-red-500 ml-1">*</span>}
       </label>
 
       <input
@@ -15,11 +17,15 @@ export default function Input({
         placeholder={placeholder}
         className="
           w-full px-3 py-2
-          border rounded-md text-sm
+          border border-gray-300 text-sm
           focus:outline-none
-          focus:ring-2 focus:ring-yellow-400
+          rounded-md
+          focus:border-yellow-400 focus:outline-none
         "
       />
     </div>
   );
 }
+
+
+//h-10 rounded-md border border-gray-300 px-3 text-sm focus:border-yellow-400 focus:outline-none
