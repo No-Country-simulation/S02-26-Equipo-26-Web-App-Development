@@ -11,7 +11,7 @@ const generoOptions = [
   { value: "prefiero_no_decir", label: "Prefiero no decir" },
 ];
 
-export default function StepDatosPersonales() {
+export default function StepDatosPersonales({ formData, setFormData }) {
     const fileInputRef = useRef(null);
 
   const handleClick = () => {
@@ -65,7 +65,15 @@ export default function StepDatosPersonales() {
 
       {/* Form */}
       <div className="grid grid-cols-2 gap-4">
-        <Input label="Nombre" placeholder="Ingrese nombre" required />
+        <Input
+        required
+        label="Nombre"
+        placeholder="Ingrese nombre"
+        value={formData.nombre}
+        onChange={(e) =>
+        setFormData({ ...formData, nombre: e.target.value })
+  }
+/>
         <Input label="Apellido" placeholder="Ingrese apellido" required />
 
         <Input label="DNI" placeholder="XX.XXX.XXX" required/>

@@ -1,6 +1,6 @@
 import FileUpload from "./inputs/FileUpload"
 
-export default function StepDocumentos() {
+export default function StepDocumentos({ formData, setFormData }) {
   return (
     <div className="space-y-6">
       
@@ -13,34 +13,47 @@ export default function StepDocumentos() {
 
       {/* Grid de uploads */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-  <FileUpload
-    label="DNI (Frente)"
-    required
-    helper="PDF, JPG o PNG hasta 5MB"
-    accept="application/pdf,image/png,image/jpeg"
-  />
 
-  <FileUpload
-    label="DNI (Dorso)"
-    required
-    helper="PDF, JPG o PNG hasta 5MB"
-    accept="application/pdf,image/png,image/jpeg"
-  />
+        <FileUpload
+          label="DNI (Frente)"
+          required
+          helper="PDF, JPG o PNG hasta 5MB"
+          accept="application/pdf,image/png,image/jpeg"
+          onChange={(file) =>
+            setFormData({ ...formData, dniFrente: file })
+          }
+        />
 
-  <FileUpload
-    label="Certificado de Antecedentes"
-    required
-    helper="PDF hasta 5MB"
-    accept="application/pdf"
-  />
+        <FileUpload
+          label="DNI (Dorso)"
+          required
+          helper="PDF, JPG o PNG hasta 5MB"
+          accept="application/pdf,image/png,image/jpeg"
+          onChange={(file) =>
+            setFormData({ ...formData, dniDorso: file })
+          }
+        />
 
-  <FileUpload
-    label="Curriculum Vitae"
-    helper="PDF hasta 5MB"
-    accept="application/pdf"
-  />
-</div>
+        <FileUpload
+          label="Certificado de Antecedentes"
+          required
+          helper="PDF hasta 5MB"
+          accept="application/pdf"
+          onChange={(file) =>
+            setFormData({ ...formData, antecedentes: file })
+          }
+        />
+
+        <FileUpload
+          label="Curriculum Vitae"
+          helper="PDF hasta 5MB"
+          accept="application/pdf"
+          onChange={(file) =>
+            setFormData({ ...formData, cv: file })
+          }
+        />
+
+      </div>
     </div>
   )
 }
-
