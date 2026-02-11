@@ -1,0 +1,12 @@
+/* Usa el mismo CSS que Patients.css, solo cambia este bloque: */
+
+.empty-page-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1a1e29;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }

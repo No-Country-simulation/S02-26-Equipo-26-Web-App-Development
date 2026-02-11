@@ -1,0 +1,12 @@
+/* Usa el mismo CSS, solo cambia este bloque: */
+
+.empty-page-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1a1e29;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
