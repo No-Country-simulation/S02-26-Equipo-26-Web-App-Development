@@ -1,0 +1,105 @@
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1.5rem;
+  height: 64px;
+  background-color: #1a1e29;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  font-family: 'Inter', sans-serif;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  box-sizing: border-box;
+  color: #f8fafc;
+}
+
+/* Hamburger Menu */
+.sidebar-toggle {
+  background: none;
+  border: none;
+  color: #f8fafc;
+  font-size: 24px;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+}
+
+.sidebar-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: scale(1.05);
+}
+
+.sidebar-toggle:active {
+  transform: scale(0.95);
+}
+
+/* Acciones del header */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #94a3b8;
+  font-size: 24px;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.icon-btn:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #f8fafc;
+  transform: scale(1.05);
+}
+
+.user-profile .avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: #333;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.user-profile .avatar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .app-header {
+    padding: 0 1rem;
+    height: 56px;
+  }
+
+  .sidebar-toggle {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+
+  .icon-btn {
+    font-size: 20px;
+    padding: 6px;
+  }
+
+  .user-profile .avatar {
+    width: 32px;
+    height: 32px;
+  }
+}

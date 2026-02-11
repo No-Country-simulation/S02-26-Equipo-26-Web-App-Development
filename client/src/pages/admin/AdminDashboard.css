@@ -168,3 +168,31 @@
   padding: 2px 6px;
   border-radius: 4px;
 }
+
+/* Ajuste para el sidebar */
+.dashboard-container {
+  padding-top: calc(1rem + 64px); /* 64px = altura del header */
+  margin-left: 260px; /* Ancho del sidebar */
+  transition: margin-left 0.3s ease;
+}
+
+/* Cuando el sidebar está colapsado */
+.dashboard-container.sidebar-collapsed {
+  margin-left: 80px; /* Ancho del sidebar colapsado */
+}
+
+/* Para pantallas móviles */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding-top: calc(1rem + 56px); /* 56px = altura del header en móviles */
+    margin-left: 0; /* Sidebar colapsado por defecto en móviles */
+  }
+
+  .sidebar-container {
+    transform: translateX(-100%);
+  }
+
+  .sidebar-container.active {
+    transform: translateX(0);
+  }
+}
