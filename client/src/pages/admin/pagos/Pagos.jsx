@@ -1,29 +1,9 @@
 import Header from '../../../core/components/header/Header';
 import Sidebar from '../../../core/components/sidebar/Sidebar';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './Pagos.css';
 
-export default function PagosPage() {
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-
-  const toggleSidebar = () => {
-    setSidebarCollapsed(!sidebarCollapsed);
-  };
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setSidebarCollapsed(true);
-      } else {
-        setSidebarCollapsed(false);
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    handleResize();
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
+export default function PagosPage({ sidebarCollapsed, toggleSidebar }) {
   return (
     <>
       <Header sidebarCollapsed={sidebarCollapsed} onToggleSidebar={toggleSidebar} />
