@@ -1,7 +1,6 @@
 services:
   backend:
     build: ./server
-    container_name: django_api
     volumes:
       - ./server:/app
     ports:
@@ -13,20 +12,18 @@ services:
 
   frontend:
     build: ./client
-    container_name: react_app
     volumes:
       - ./client:/app
       - /app/node_modules
     ports:
       - "3000:3000"
-    env_file:
-      - ./client/.env
+    # env_file:
+    #   - ./client/.env
     depends_on:
       - backend
 
   postgres_db:
     image: postgres:16
-    container_name: postgres_db
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
