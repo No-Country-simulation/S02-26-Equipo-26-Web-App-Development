@@ -2,7 +2,7 @@ from pathlib import Path
 import os
 import environ
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # =========================
 # ENV
@@ -50,7 +50,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "at_manager.urls"
+ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
     {
@@ -67,7 +67,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "at_manager.wsgi.application"
+WSGI_APPLICATION = "config.wsgi.application"
 
 # =========================
 # DATABASE (POSTGRES)
