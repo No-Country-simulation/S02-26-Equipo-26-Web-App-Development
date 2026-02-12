@@ -5,10 +5,19 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    padding: 1.5rem;
-    max-width: 1600px;
+    max-width: 1650px;
     margin: 0 auto;
-    width: 100%;
+    padding: 1.5rem;
+    padding-top: calc(1.5rem + 64px);
+    margin-left: 270px;
+    transition: margin-left 0.3s ease;
+    min-height: 100vh;
+    background: #f1f5f9;
+  }
+  
+  /* Cuando el sidebar está colapsado */
+  .caregivers-page.sidebar-collapsed {
+    margin-left: 80px;
   }
   
   /* ========================================
@@ -20,6 +29,7 @@
     align-items: center;
     gap: 1rem;
     flex-wrap: wrap;
+    margin-bottom: 0.5rem;
   }
   
   .header-content {
@@ -31,13 +41,13 @@
   .page-title {
     font-size: 1.75rem;
     font-weight: 700;
-    color: #111827;
+    color: #0f172a;
     margin: 0;
   }
   
   .page-subtitle {
     font-size: 0.9rem;
-    color: #6b7280;
+    color: #64748b;
     margin: 0;
   }
   
@@ -55,12 +65,13 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    transition: all 0.2s;
+    transition: all 0.2s ease;
   }
   
   .btn-primary:hover {
     background-color: #d97706;
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
   }
   
   .btn-primary:active {
@@ -72,40 +83,40 @@
   }
   
   .btn-icon {
-    background: none;
-    border: 1px solid #d1d5db;
-    color: #6b7280;
+    background: white;
+    border: 1px solid #e2e8f0;
+    color: #64748b;
     padding: 0.5rem;
     border-radius: 6px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s;
+    transition: all 0.2s ease;
   }
   
   .btn-icon:hover {
-    background-color: #f3f4f6;
-    color: #111827;
-    border-color: #9ca3af;
+    background-color: #f8fafc;
+    color: #0f172a;
+    border-color: #cbd5e1;
   }
   
   .btn-action {
     background: none;
     border: none;
-    color: #6b7280;
+    color: #64748b;
     padding: 0.5rem;
     border-radius: 6px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s;
+    transition: all 0.2s ease;
   }
   
   .btn-action:hover {
-    background-color: #f3f4f6;
-    color: #111827;
+    background-color: #f1f5f9;
+    color: #0f172a;
   }
   
   /* ========================================
@@ -113,9 +124,14 @@
      ======================================== */
   .card {
     background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     overflow: hidden;
+    transition: box-shadow 0.2s ease;
+  }
+  
+  .card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
   }
   
   .filters-card {
@@ -132,7 +148,7 @@
      ======================================== */
   .filters-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: 1fr 1fr auto;
     gap: 1rem;
     align-items: end;
   }
@@ -146,25 +162,30 @@
   .filter-label {
     font-size: 0.75rem;
     font-weight: 600;
-    color: #6b7280;
+    color: #64748b;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
   
   .filter-select {
     padding: 0.75rem 1rem;
-    border: 1px solid #d1d5db;
+    border: 1px solid #e2e8f0;
     border-radius: 8px;
     font-size: 0.9rem;
     background-color: white;
+    color: #334155;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.2s ease;
   }
   
   .filter-select:focus {
     outline: none;
     border-color: #f59e0b;
     box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+  }
+  
+  .filter-select:hover {
+    border-color: #cbd5e1;
   }
   
   .filter-actions {
@@ -187,32 +208,34 @@
   }
   
   .table-header-row {
-    background-color: #f9fafb;
+    background-color: #f8fafc;
+    border-bottom: 2px solid #e2e8f0;
   }
   
   .table-header {
     padding: 1rem 1.5rem;
     text-align: left;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 600;
-    color: #6b7280;
+    color: #475569;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     white-space: nowrap;
   }
   
   .table-row {
-    border-bottom: 1px solid #f3f4f6;
-    transition: background-color 0.2s;
+    border-bottom: 1px solid #f1f5f9;
+    transition: background-color 0.2s ease;
   }
   
   .table-row:hover {
-    background-color: #f9fafb;
+    background-color: #f8fafc;
   }
   
   .table-cell {
     padding: 1rem 1.5rem;
     vertical-align: middle;
+    color: #334155;
   }
   
   /* ========================================
@@ -231,6 +254,7 @@
     border-radius: 50%;
     overflow: hidden;
     flex-shrink: 0;
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
   }
   
   .avatar-img {
@@ -245,8 +269,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #e5e7eb;
-    color: #6b7280;
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    color: white;
     font-weight: 600;
     font-size: 0.85rem;
   }
@@ -259,14 +283,14 @@
   
   .caregiver-name {
     font-weight: 600;
-    color: #111827;
+    color: #0f172a;
     margin: 0;
     font-size: 0.95rem;
   }
   
   .caregiver-id {
     font-size: 0.8rem;
-    color: #9ca3af;
+    color: #94a3b8;
     margin: 0;
   }
   
@@ -277,18 +301,19 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.375rem 0.75rem;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    font-weight: 500;
+    padding: 0.375rem 0.875rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
     border: 1px solid;
+    white-space: nowrap;
   }
   
   /* Especialidades */
   .especialidad-geriatria {
     background-color: #ecfeff;
     color: #0e7490;
-    border-color: #5eead4;
+    border-color: #67e8f9;
   }
   
   .especialidad-discapacidad {
@@ -318,26 +343,26 @@
   .especialidad-paliativos {
     background-color: #fff1f2;
     color: #be123c;
-    border-color: #fca5a5;
+    border-color: #fda4af;
   }
   
   .especialidad-default {
-    background-color: #f9fafb;
-    color: #4b5563;
-    border-color: #e5e7eb;
+    background-color: #f8fafc;
+    color: #475569;
+    border-color: #e2e8f0;
   }
   
   /* Estado */
   .badge-active {
-    background-color: #ecfdf5;
+    background-color: #d1fae5;
     color: #065f46;
     border-color: #86efac;
   }
   
   .badge-inactive {
-    background-color: #f9fafb;
-    color: #4b5563;
-    border-color: #e5e7eb;
+    background-color: #f8fafc;
+    color: #475569;
+    border-color: #e2e8f0;
   }
   
   .status-dot {
@@ -349,10 +374,20 @@
   
   .dot-active {
     background-color: #10b981;
+    animation: pulse 2s ease-in-out infinite;
   }
   
   .dot-inactive {
-    background-color: #9ca3af;
+    background-color: #94a3b8;
+  }
+  
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
   }
   
   /* ========================================
@@ -368,18 +403,18 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    font-size: 0.9rem;
-    color: #4b5563;
+    font-size: 0.85rem;
+    color: #475569;
   }
   
   .contact-icon {
     font-size: 16px;
-    color: #9ca3af;
+    color: #94a3b8;
   }
   
   .contact-text {
-    font-size: 0.9rem;
-    color: #4b5563;
+    font-size: 0.85rem;
+    color: #475569;
   }
   
   /* ========================================
@@ -398,14 +433,16 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem 1.5rem;
-    border-top: 1px solid #f3f4f6;
+    border-top: 1px solid #f1f5f9;
     flex-wrap: wrap;
     gap: 1rem;
+    background-color: #f8fafc;
   }
   
   .pagination-info {
     font-size: 0.9rem;
-    color: #6b7280;
+    color: #64748b;
+    font-weight: 500;
   }
   
   .pagination-buttons {
@@ -415,18 +452,20 @@
   
   .btn-pagination {
     padding: 0.5rem 1rem;
-    border-radius: 6px;
+    border-radius: 8px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s;
-    border: 1px solid #d1d5db;
+    transition: all 0.2s ease;
+    border: 1px solid #e2e8f0;
     background-color: white;
-    color: #111827;
+    color: #0f172a;
+    font-size: 0.875rem;
   }
   
   .btn-pagination:hover:not(:disabled) {
-    background-color: #f9fafb;
-    border-color: #9ca3af;
+    background-color: #f8fafc;
+    border-color: #cbd5e1;
+    transform: translateY(-1px);
   }
   
   .btn-pagination:disabled {
@@ -444,16 +483,30 @@
     border: none;
   }
   
-  .btn-next:hover {
+  .btn-next:hover:not(:disabled) {
     background-color: #d97706;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
   }
   
   /* ========================================
      RESPONSIVE
      ======================================== */
+  @media (max-width: 1024px) {
+    .filters-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  
+    .filter-actions {
+      grid-column: 1 / -1;
+      justify-content: flex-start;
+    }
+  }
+  
   @media (max-width: 768px) {
     .caregivers-page {
+      margin-left: 0;
       padding: 1rem;
+      padding-top: calc(1rem + 64px);
     }
   
     .page-header {
@@ -463,6 +516,10 @@
   
     .filters-grid {
       grid-template-columns: 1fr;
+    }
+  
+    .filter-actions {
+      grid-column: 1;
     }
   
     .table-cell {
@@ -492,11 +549,24 @@
       width: 100%;
       justify-content: space-between;
     }
+  
+    /* Ocultar algunos elementos en móvil */
+    .contact-info {
+      gap: 0.25rem;
+    }
+  
+    .contact-item:last-child {
+      display: none;
+    }
   }
   
   @media (max-width: 480px) {
     .page-title {
       font-size: 1.5rem;
+    }
+  
+    .page-subtitle {
+      font-size: 0.85rem;
     }
   
     .caregiver-name {
@@ -508,10 +578,29 @@
     }
   
     .contact-item {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
+    }
+  
+    .contact-icon {
+      font-size: 14px;
     }
   
     .btn-icon {
       padding: 0.4rem;
+    }
+  
+    .badge {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.625rem;
+    }
+  
+    .table-header {
+      font-size: 0.7rem;
+      padding: 0.75rem 0.5rem;
+    }
+  
+    .table-cell {
+      padding: 0.75rem 0.5rem;
+      font-size: 0.85rem;
     }
   }

@@ -21,7 +21,7 @@ html, body, #root {
 
 body {
   font-family: 'Inter', sans-serif;
-  background: #121212;
+  background: #f1f5f9; /* ✅ Fondo gris claro */
   color: #e2e8f0;
   line-height: 1.5;
 }
@@ -35,12 +35,6 @@ body {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-lg);
-}
-
-/* Estilos para el fondo */
-body {
-  background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
-  background-attachment: fixed;
 }
 
 /* Ajuste para pantallas pequeñas */

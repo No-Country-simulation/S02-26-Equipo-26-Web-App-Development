@@ -1,6 +1,6 @@
 import Header from '../../../core/components/header/Header';
 import Sidebar from '../../../core/components/sidebar/Sidebar';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './Cuidadores.css';
 
 // Mock data for caregivers
@@ -9,7 +9,7 @@ const cuidadores = [
     id: "#C-1024",
     nombre: "Ana Martinez",
     avatar: "/user-placeholder.png",
-    especialidad: "Geriatría",
+    especialidad: "Geriatría", 
     estado: "activo",
     email: "ana.m@valora.com",
     telefono: "+54 9 11 555-1234",
@@ -71,18 +71,10 @@ const especialidadConfig = {
   "Cuidados paliativos": { className: "especialidad-paliativos" },
 };
 
-export default function CuidadoresPage() {
+export default function CuidadoresPage({ sidebarCollapsed, toggleSidebar }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [especialidadFilter, setEspecialidadFilter] = useState("todas");
   const [disponibilidadFilter, setDisponibilidadFilter] = useState("cualquiera");
-  
-  // Estado para controlar si el sidebar está colapsado
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-
-  // Manejador de toggle del sidebar
-  const toggleSidebar = () => {
-    setSidebarCollapsed(!sidebarCollapsed);
-  };
 
   // Filtrar cuidadores
   const filteredCuidadores = cuidadores.filter((cuidador) => {
@@ -103,21 +95,6 @@ export default function CuidadoresPage() {
       .join("")
       .toUpperCase();
   };
-
-  // Detectar cambios de tamaño de pantalla
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setSidebarCollapsed(true);
-      } else {
-        setSidebarCollapsed(false);
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    handleResize();
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   return (
     <>
@@ -271,7 +248,7 @@ export default function CuidadoresPage() {
           {/* Pagination */}
           <div className="pagination">
             <div className="pagination-info">
-              Mostrando 1-10 de {filteredCuidadores.length} cuidadores
+              Mostrando 1-{filteredCuidadores.length} de {filteredCuidadores.length} cuidadores
             </div>
             <div className="pagination-buttons">
               <button className="btn-pagination btn-prev" disabled>

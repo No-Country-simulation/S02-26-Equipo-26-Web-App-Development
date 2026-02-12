@@ -1,13 +1,12 @@
 import Header from '../../core/components/header/Header';
 import Sidebar from '../../core/components/sidebar/Sidebar';
-import { useState, useEffect } from 'react';
 import "./AdminDashboard.css";
 
 const stats = [
-  { label: "Usuarios", value: "1,245", icon: "people", color: "blue" },
+  { label: "Usuarios", value: "$1,245", icon: "people", color: "blue" },
   { label: "Ingresos", value: "$12,430", icon: "attach_money", color: "green" },
   { label: "Gastos", value: "$3,210", icon: "trending_down", color: "orange" },
-  { label: "Pendientes", value: "18", icon: "schedule", color: "cyan" }
+  { label: "Pendientes", value: "$18", icon: "schedule", color: "cyan" }
 ];
 
 const validationRequests = [
@@ -20,42 +19,17 @@ const recentPayments = [
   { name: "Ana Gómez", amount: "$980" }
 ];
 
-export default function AdminDashboard() {
-  // Estado para controlar si el sidebar está colapsado
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-
-  // Manejador de toggle del sidebar
-  const toggleSidebar = () => {
-    setSidebarCollapsed(!sidebarCollapsed);
-  };
-
-  // Detectar cambios de tamaño de pantalla
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setSidebarCollapsed(true);
-      } else {
-        setSidebarCollapsed(false);
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    handleResize(); // Ejecutar al inicio
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
+export default function AdminDashboard({ sidebarCollapsed, toggleSidebar }) {
   return (
     <>
-      {/* Header con Hamburger Menu */}
       <Header 
         sidebarCollapsed={sidebarCollapsed} 
         onToggleSidebar={toggleSidebar} 
       />
 
-      {/* Sidebar */}
       <Sidebar collapsed={sidebarCollapsed} />
 
-      {/* Contenido principal */}
+      {/* CONTENIDO PRINCIPAL */}
       <div className={`dashboard-container ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
 
         <header className="page-header">
@@ -88,10 +62,8 @@ export default function AdminDashboard() {
         {/* MAIN GRID */}
         <div className="dashboard-main-grid">
 
-          {/* LEFT COLUMN */}
           <div className="left-column">
 
-            {/* MÉTRICAS */}
             <section className="dashboard-section">
               <div className="card metrics-card">
                 <div className="card-header">
@@ -116,7 +88,6 @@ export default function AdminDashboard() {
               </div>
             </section>
 
-            {/* VALIDACIONES */}
             <section className="dashboard-section">
               <div className="card table-card">
                 <div className="card-header">
@@ -158,7 +129,6 @@ export default function AdminDashboard() {
               </div>
             </section>
 
-            {/* PAGOS */}
             <section className="dashboard-section">
               <div className="card table-card">
                 <div className="card-header">
@@ -179,7 +149,6 @@ export default function AdminDashboard() {
 
           </div>
 
-          {/* RIGHT COLUMN */}
           <div className="right-column">
 
             <section className="dashboard-section">
@@ -211,6 +180,7 @@ export default function AdminDashboard() {
             </section>
 
           </div>
+
         </div>
       </div>
     </>
