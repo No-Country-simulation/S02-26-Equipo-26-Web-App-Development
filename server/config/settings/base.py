@@ -35,7 +35,7 @@ INSTALLED_APPS = [
 
     # Third party
     "rest_framework",
-
+    'rest_framework_simplejwt',
     # Local apps
     "apps.users",
 ]
@@ -48,6 +48,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'users.middleware.JWTAuthenticationMiddleware', 
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -84,6 +85,38 @@ DATABASES = {
     }
 }
 
+# REST Framework 
+ConfigurationREST_FRAMEWORK = {    
+    'DEFAULT_AUTHENTICATION_CLASSES': (        
+        'rest_framework_simplejwt.authentication.JWTAuthentication',    
+    ),    
+    'DEFAULT_PERMISSION_CLASSES': (        
+        'rest_framework.permissions.IsAuthenticated',    
+    ),    
+    'DEFAULT_RENDERER_CLASSES': (        
+        'rest_framework.renderers.JSONRenderer',    
+    ),    
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',    
+    'PAGE_SIZE': 20,
+}
+
+# JWT Settings
+SIMPLE_JWT = {    
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=5),    
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),    
+    'ROTATE_REFRESH_TOKENS': True,    
+    'BLACKLIST_AFTER_ROTATION': True,    
+    'ALGORITHM': 'HS256',    
+    'SIGNING_KEY': config('SECRET_KEY'),    
+    'AUTH_HEADER_TYPES': ('Bearer',),    
+    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',    
+    'USER_ID_FIELD': 'id',    
+    'USER_ID_CLAIM': 'user_id',}
+
+# Custom User Model
+AUTH_USER_MODEL = 'app.users.User'
+
+
 # =========================
 # PASSWORD VALIDATION
 # =========================
@@ -94,6 +127,10 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
+
+
+
+
 
 # =========================
 # INTERNATIONALIZATION
