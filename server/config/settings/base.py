@@ -35,9 +35,14 @@ INSTALLED_APPS = [
 
     # Third party
     "rest_framework",
+    "rest_framework_simplejwt",
+    "corsheaders",
 
     # Local apps
-    "apps.users",
+    "apps.users.apps.UsersConfig",
+    "apps.documents.apps.DocumentsConfig",
+    "apps.payments.apps.PaymentsConfig",
+    "apps.shifts.apps.ShiftsConfig",
 ]
 
 MIDDLEWARE = [
@@ -112,4 +117,51 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+# Modelo de usuario personalizado (referencia a nuestro modelo)
+AUTH_USER_MODEL = 'users.User'  # AGREGAR ESTA LÍNEA
+
+# =========================
+# AUTHENTICATION
+# =========================
+
+#AUTHENTICATION_BACKENDS = [
+#    'apps.users.authentication.EmailBackend',
+#    'django.contrib.auth.backends.ModelBackend',
+#]
+
+# =========================
+# DJANGO REST FRAMEWORK
+# =========================
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',  # Temporalmente
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
+}
+
+# =========================
+# CORS
+# =========================
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
+# =========================
+# JWT SETTINGS
+# =========================
+
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+}
