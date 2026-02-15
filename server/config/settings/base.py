@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     # Third party
+    'django.contrib.admin',
+    'jazzmin',
     "rest_framework",
     'rest_framework_simplejwt',
     # Local apps
@@ -128,9 +130,24 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
+# Email Configuration (Para que funcionen los signals)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  
+# O tu servidor 
+SMTPEMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = config('EMAIL_USER', default='tu-email@gmail.com')
+EMAIL_HOST_PASSWORD = config('EMAIL_PASSWORD', default='tu-password')
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='noreply@cuidadores.com')
 
-
-
+# Configuración de Jazzmin (tema moderno para admin)
+JAZZMIN_SETTINGS = {    
+    "site_title": "Cuidadores Admin",    
+    "site_header": "Sistema de Gestión",   
+    "site_brand": "Cuidadores",   
+    "welcome_sign": "Bienvenido al Panel de Administración", 
+    "copyright": "Tu Empresa PYME",
+    }
 
 # =========================
 # INTERNATIONALIZATION

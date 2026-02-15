@@ -5,3 +5,4 @@ python-dotenv
 django-environ
 python-decouple>=3.8
 djangorestframework-simplejwt>=5.3.0
+django-jazzmin
