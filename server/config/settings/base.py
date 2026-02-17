@@ -1,7 +1,7 @@
 from pathlib import Path
 import os
 import environ
-
+from datetime import timedelta
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # =========================
@@ -26,6 +26,7 @@ ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=[])
 # =========================
 
 INSTALLED_APPS = [
+    'jazzmin',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -34,12 +35,16 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     # Third party
-    'django.contrib.admin',
-    'jazzmin',
     "rest_framework",
     'rest_framework_simplejwt',
     # Local apps
-    "apps.users",
+    'apps.users',
+    'apps.patients',
+    'apps.caregivers',
+    'apps.admins',
+    'apps.documents',
+    'apps.payments',
+    'apps.shifts',
 ]
 
 MIDDLEWARE = [
@@ -50,7 +55,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'users.middleware.JWTAuthenticationMiddleware', 
+    'apps.users.middleware.JWTAuthenticationMiddleware',
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -88,17 +93,17 @@ DATABASES = {
 }
 
 # REST Framework 
-ConfigurationREST_FRAMEWORK = {    
-    'DEFAULT_AUTHENTICATION_CLASSES': (        
-        'rest_framework_simplejwt.authentication.JWTAuthentication',    
-    ),    
-    'DEFAULT_PERMISSION_CLASSES': (        
-        'rest_framework.permissions.IsAuthenticated',    
-    ),    
-    'DEFAULT_RENDERER_CLASSES': (        
-        'rest_framework.renderers.JSONRenderer',    
-    ),    
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',    
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20,
 }
 
@@ -109,14 +114,14 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': True,    
     'BLACKLIST_AFTER_ROTATION': True,    
     'ALGORITHM': 'HS256',    
-    'SIGNING_KEY': config('SECRET_KEY'),    
+    'SIGNING_KEY': env('DJANGO_SECRET_KEY'),    
     'AUTH_HEADER_TYPES': ('Bearer',),    
     'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',    
     'USER_ID_FIELD': 'id',    
     'USER_ID_CLAIM': 'user_id',}
 
 # Custom User Model
-AUTH_USER_MODEL = 'app.users.User'
+AUTH_USER_MODEL = 'users.User'
 
 
 # =========================
@@ -132,13 +137,12 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Email Configuration (Para que funcionen los signals)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'  
-# O tu servidor 
-SMTPEMAIL_PORT = 587
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = config('EMAIL_USER', default='tu-email@gmail.com')
-EMAIL_HOST_PASSWORD = config('EMAIL_PASSWORD', default='tu-password')
-DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='noreply@cuidadores.com')
+EMAIL_HOST_USER = env('EMAIL_USER', default='tu-email@gmail.com')
+EMAIL_HOST_PASSWORD = env('EMAIL_PASSWORD', default='')
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL', default='noreply@cuidadores.com')
 
 # Configuración de Jazzmin (tema moderno para admin)
 JAZZMIN_SETTINGS = {    
