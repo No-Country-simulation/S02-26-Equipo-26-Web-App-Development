@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'apps.users',
     'apps.patients',
     'apps.caregivers',
-    'apps.admins',
     'apps.documents',
     'apps.payments',
     'apps.shifts',

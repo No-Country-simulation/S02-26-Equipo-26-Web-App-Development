@@ -65,15 +65,24 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         # Crear perfil según el rol
         role = user.role
         if role == 'Patient':
-            Patient.objects.create(user=user, medical_history=medical_history or '')
-        elif role == 'Caregiver':
-            Caregiver.objects.create(
+            # Evitar IntegrityError si ya existe un perfil para este usuario
+            Patient.objects.get_or_create(
                 user=user,
-                hourly_rate=hourly_rate,
-                bank_account=bank_account or ''
+                defaults={'medical_history': medical_history or ''}
+            )
+        elif role == 'Caregiver':
+            Caregiver.objects.get_or_create(
+                user=user,
+                defaults={
+                    'hourly_rate': hourly_rate,
+                    'bank_account': bank_account or '',
+                },
             )
         elif role == 'Admin':
-            Admin.objects.create(user=user, access_level=access_level or 1)
+            Admin.objects.get_or_create(
+                user=user,
+                defaults={'access_level': access_level or 1},
+            )
 
         return user
 
