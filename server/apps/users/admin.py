@@ -4,9 +4,13 @@ from django.utils.html import format_html
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from .models import (
-    User, Location, Patient, Caregiver, Admin as AdminProfile,
-    Family, Document, Payment, ShiftReport
+    User, Location, Admin as AdminProfile,
 )
+from apps.patients.models import Patient, Family
+from apps.caregivers.models import Caregiver
+from apps.documents.models import Document
+from apps.payments.models import Payment
+from apps.shifts.models import ShiftReport
 
 
 # ========== INLINE ADMINS ==========

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from apps.users.models import Caregiver
+from .models import Caregiver
 
 
 class CaregiverSerializer(serializers.ModelSerializer):

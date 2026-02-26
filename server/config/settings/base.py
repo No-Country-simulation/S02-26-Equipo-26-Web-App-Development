@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'apps.documents',
     'apps.payments',
     'apps.shifts',
+    'apps.assignments',
 ]
 
 MIDDLEWARE = [

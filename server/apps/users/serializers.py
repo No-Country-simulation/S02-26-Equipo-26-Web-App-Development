@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
-from .models import User, Location, Patient, Caregiver, Admin
+from .models import User, Location, Admin
+from apps.patients.models import Patient
+from apps.caregivers.models import Caregiver
 
 
 class LocationSerializer(serializers.ModelSerializer):

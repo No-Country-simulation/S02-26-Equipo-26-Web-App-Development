@@ -2,7 +2,11 @@ from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import User, Caregiver, Patient, Admin as AdminProfile, Document, Payment
+from .models import User, Admin as AdminProfile
+from apps.patients.models import Patient
+from apps.caregivers.models import Caregiver
+from apps.documents.models import Document
+from apps.payments.models import Payment
 
 
 # ========== SIGNAL: Crear perfil automáticamente al crear usuario ==========

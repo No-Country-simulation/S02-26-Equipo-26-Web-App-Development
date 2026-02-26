@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
-from apps.users.models import ShiftReport
+from .models import ShiftReport
 from .serializers import ShiftReportSerializer
 
 
