@@ -2,6 +2,13 @@ from django.db import models
 
 
 class ShiftReport(models.Model):
+    assignment = models.ForeignKey(
+        'assignments.Assignment',
+        on_delete=models.CASCADE,
+        related_name='shift_reports',
+        null=True,
+        blank=True,
+    )
     patient = models.ForeignKey(
         'patients.Patient',
         on_delete=models.CASCADE,
@@ -27,7 +34,12 @@ class ShiftReport(models.Model):
         null=True,
         blank=True,
     )
-    report_description = models.TextField(blank=True, null=True)
+    status = models.CharField(max_length=20, default='Scheduled')
+    important_notes = models.TextField(blank=True, null=True)
+    tasks_performed = models.TextField(blank=True, null=True)
+    patient_signature = models.CharField(max_length=255, blank=True, null=True)
+    confirmed_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = 'shift_report'

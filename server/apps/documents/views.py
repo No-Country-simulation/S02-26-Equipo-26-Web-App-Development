@@ -1,4 +1,4 @@
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, serializers
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -78,16 +78,25 @@ class DocumentViewSet(viewsets.ModelViewSet):
         return queryset.order_by('-upload_date')
     
     def perform_create(self, serializer):
-        """Asignar automáticamente el caregiver si es cuidador creando su doc"""
+        """Asignar caregiver automáticamente o usar el especificado por admin"""
         user = self.request.user
+        validated_data = serializer.validated_data
         
         if user.role == 'Caregiver':
-            # El cuidador crea su propio documento
+            # Cuidador crea su propio documento
             caregiver = user.caregiver_profile
             serializer.save(caregiver=caregiver)
         else:
-            # Admin crea documento para un cuidador específico
-            serializer.save()
+            # Admin especifica caregiver_id
+            from apps.users.models import Caregiver
+            caregiver_id = validated_data.pop('caregiver_id', None)
+            try:
+                caregiver = Caregiver.objects.get(user_id=caregiver_id)
+                serializer.save(caregiver=caregiver)
+            except Caregiver.DoesNotExist:
+                raise serializers.ValidationError({
+                    'caregiver_id': 'Cuidador no encontrado'
+                })
     
     @action(detail=False, methods=['get'], permission_classes=[IsAdmin])
     def pending(self, request):

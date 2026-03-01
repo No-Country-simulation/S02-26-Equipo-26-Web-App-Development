@@ -1,65 +1,82 @@
+// src/pages/register/Register.jsx
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { register } from '../../core/services/authService';
 import './Register.css';
 
+// Mapa frontend (value del select) → valor que espera el backend
+const ROLE_MAP = {
+  admin:     'Admin',
+  caregiver: 'Caregiver',
+  patient:   'Patient',
+};
+
 export default function Register() {
-  // Estados del formulario
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [selectedRole, setSelectedRole] = useState('patient');
+  const [form, setForm] = useState({
+    fullName:        '',
+    email:           '',
+    password:        '',
+    confirmPassword: '',
+    role:            'patient',
+    hourlyRate:      '',     // solo Caregiver
+  });
   const [acceptTerms, setAcceptTerms] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [isLoading,   setIsLoading]   = useState(false);
+  const [error,       setError]       = useState('');
 
   const navigate = useNavigate();
 
-  // Validación de contraseñas
-  const validatePasswords = () => {
-    if (password !== confirmPassword) {
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setForm((prev) => ({ ...prev, [id]: value }));
+    setError('');
+  };
+
+  const validate = () => {
+    if (form.password !== form.confirmPassword) {
       setError('Las contraseñas no coinciden');
       return false;
     }
-    if (password.length < 6) {
-      setError('La contraseña debe tener al menos 6 caracteres');
+    if (form.password.length < 8) {
+      setError('La contraseña debe tener al menos 8 caracteres');
+      return false;
+    }
+    if (!acceptTerms) {
+      setError('Debes aceptar los términos y condiciones');
+      return false;
+    }
+    if (form.role === 'caregiver' && !form.hourlyRate) {
+      setError('Debes indicar tu tarifa por hora');
       return false;
     }
     return true;
   };
 
-  // Manejador del submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Validar contraseñas
-    if (!validatePasswords()) {
-      return;
-    }
+    if (!validate()) return;
 
-    // Validar términos y condiciones
-    if (!acceptTerms) {
-      setError('Debes aceptar los términos y condiciones');
-      return;
-    }
+    // Separar nombre completo en first_name / last_name
+    const [firstName = '', ...rest] = form.fullName.trim().split(' ');
+    const lastName = rest.join(' ') || firstName; // fallback si solo hay un nombre
 
     setIsLoading(true);
     setError('');
 
     try {
-      // Aquí irá tu lógica de registro
-      // Ejemplo: await authService.register(name, email, password, selectedRole);
-      
-      console.log('Register data:', { name, email, password, selectedRole });
-      
-      // Simular carga (eliminar en producción)
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Redirigir al login después de registrarse
-      navigate('/login');
-      
+      await register({
+        firstName,
+        lastName,
+        email:           form.email,
+        password:        form.password,
+        passwordConfirm: form.confirmPassword,
+        role:            ROLE_MAP[form.role],
+        hourlyRate:      form.role === 'caregiver' ? parseFloat(form.hourlyRate) : null,
+      });
+
+      // Registro exitoso → ir al dashboard o login
+      navigate('/login', { state: { registered: true } });
     } catch (err) {
-      console.error('Register error:', err);
       setError(err.message || 'Error al registrar usuario');
     } finally {
       setIsLoading(false);
@@ -70,33 +87,29 @@ export default function Register() {
     <div className="register-container">
       <div className="register-card">
         <div className="brand">
-          <img 
-            src="/logoV3.png" 
-            alt="Valora Logo" 
-            className="brand-logo" 
-          />
+          <img src="/logoV3.png" alt="Valora Logo" className="brand-logo" />
           <p>Gestión Integral de Cuidados</p>
         </div>
 
         <form onSubmit={handleSubmit}>
-          {/* Campo: Nombre completo */}
+          {/* Nombre completo */}
           <div className="form-group">
-            <label htmlFor="name">Nombre completo</label>
+            <label htmlFor="fullName">Nombre completo</label>
             <div className="input-wrapper">
               <span className="material-icons input-icon">person</span>
               <input
                 type="text"
-                id="name"
+                id="fullName"
                 placeholder="Juan Pérez"
                 className="form-control"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={form.fullName}
+                onChange={handleChange}
                 required
               />
             </div>
           </div>
 
-          {/* Campo: Email */}
+          {/* Email */}
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <div className="input-wrapper">
@@ -106,14 +119,14 @@ export default function Register() {
                 id="email"
                 placeholder="nombre@empresa.com"
                 className="form-control"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={form.email}
+                onChange={handleChange}
                 required
               />
             </div>
           </div>
 
-          {/* Campo: Contraseña */}
+          {/* Contraseña */}
           <div className="form-group">
             <label htmlFor="password">Contraseña</label>
             <div className="input-wrapper">
@@ -123,14 +136,14 @@ export default function Register() {
                 id="password"
                 placeholder="••••••••"
                 className="form-control"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={form.password}
+                onChange={handleChange}
                 required
               />
             </div>
           </div>
 
-          {/* Campo: Confirmar contraseña */}
+          {/* Confirmar contraseña */}
           <div className="form-group">
             <label htmlFor="confirmPassword">Confirmar contraseña</label>
             <div className="input-wrapper">
@@ -140,14 +153,14 @@ export default function Register() {
                 id="confirmPassword"
                 placeholder="••••••••"
                 className="form-control"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                value={form.confirmPassword}
+                onChange={handleChange}
                 required
               />
             </div>
           </div>
 
-          {/* Campo: Rol */}
+          {/* Rol */}
           <div className="form-group">
             <label htmlFor="role">Registrarse como</label>
             <div className="input-wrapper">
@@ -155,8 +168,8 @@ export default function Register() {
               <select
                 id="role"
                 className="form-control"
-                value={selectedRole}
-                onChange={(e) => setSelectedRole(e.target.value)}
+                value={form.role}
+                onChange={handleChange}
               >
                 <option value="admin">Administrador</option>
                 <option value="caregiver">Acompañante / Cuidador</option>
@@ -165,7 +178,28 @@ export default function Register() {
             </div>
           </div>
 
-          {/* Términos y condiciones */}
+          {/* Tarifa por hora (solo Caregiver) */}
+          {form.role === 'caregiver' && (
+            <div className="form-group">
+              <label htmlFor="hourlyRate">Tarifa por hora (USD)</label>
+              <div className="input-wrapper">
+                <span className="material-icons input-icon">attach_money</span>
+                <input
+                  type="number"
+                  id="hourlyRate"
+                  placeholder="15.00"
+                  min="1"
+                  step="0.01"
+                  className="form-control"
+                  value={form.hourlyRate}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Términos */}
           <div className="form-group terms">
             <label className="checkbox-label">
               <input
@@ -173,29 +207,28 @@ export default function Register() {
                 checked={acceptTerms}
                 onChange={(e) => setAcceptTerms(e.target.checked)}
               />
-              <span>Acepto los <a href="#" className="terms-link">términos y condiciones</a></span>
+              <span>
+                Acepto los{' '}
+                <a href="#" className="terms-link">
+                  términos y condiciones
+                </a>
+              </span>
             </label>
           </div>
 
-          {/* Mensaje de error */}
+          {/* Error */}
           {error && <div className="error-message">{error}</div>}
 
-          {/* Botón de registro */}
-          <button 
-            type="submit" 
-            className="btn-register" 
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <div className="spinner"></div>
-            ) : (
-              'Crear cuenta'
-            )}
+          {/* Botón */}
+          <button type="submit" className="btn-register" disabled={isLoading}>
+            {isLoading ? <div className="spinner"></div> : 'Crear cuenta'}
           </button>
 
-          {/* Enlace a login */}
           <div className="login-link">
-            ¿Ya tienes cuenta? <Link to="/login" className="link">Iniciar sesión</Link>
+            ¿Ya tienes cuenta?{' '}
+            <Link to="/login" className="link">
+              Iniciar sesión
+            </Link>
           </div>
         </form>
       </div>

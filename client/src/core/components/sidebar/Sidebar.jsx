@@ -26,9 +26,8 @@ export default function Sidebar({ collapsed }) {
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
-      if (window.innerWidth < 768) {
-        setCollapsed(true);
-      }
+      // El collapsed se maneja desde el componente padre (CuidadoresPage)
+      // No lo manejamos aquí internamente
     };
 
     window.addEventListener('resize', handleResize);

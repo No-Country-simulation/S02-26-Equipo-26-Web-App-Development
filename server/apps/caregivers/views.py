@@ -1,64 +1,117 @@
+# server/apps/caregivers/views.py
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from .models import Caregiver
-from .serializers import CaregiverSerializer
+from django.db import transaction
+
+from .models import Caregiver, Specialty
+from .serializers import (
+    CaregiverListSerializer,
+    CaregiverDetailSerializer,
+    CaregiverCreateSerializer,
+    SpecialtySerializer
+)
+from apps.users.models import User
+
+
+class SpecialtyViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    ViewSet para listar especialidades.
+    GET /api/caregivers/specialties/
+    """
+    queryset = Specialty.objects.all()
+    serializer_class = SpecialtySerializer
+    permission_classes = [IsAuthenticated]
 
 
 class CaregiverViewSet(viewsets.ModelViewSet):
     """
     ViewSet para gestionar Caregivers.
-    
-    IMPORTANTE: Caregiver usa user_id como primary key.
-    Las URLs usan el user_id, no un id separado.
-    
-    Endpoints disponibles:
-    - GET /api/caregivers/ → Listar todos los cuidadores
-    - GET /api/caregivers/user_id/ → Ver detalle de un cuidador
-    - PATCH /api/caregivers/user_id/ → Actualizar hourly_rate, bank_account
-    - DELETE /api/caregivers/user_id/ → Eliminar cuidador (opcional)
-    
-    NO permite POST — los cuidadores se crean vía /api/auth/register/
     """
-    queryset = Caregiver.objects.select_related('user').all()
-    serializer_class = CaregiverSerializer
+    queryset = Caregiver.objects.select_related('user', 'specialty').all()
     permission_classes = [IsAuthenticated]
-    
-    # CRÍTICO: Como Caregiver usa user como PK, el lookup field es 'user'
-    # Esto hace que las URLs sean /api/caregivers/{user_id}/
     lookup_field = 'user'
     
-    # Deshabilitar el método POST (create)
-    def create(self, request, *args, **kwargs):
-        return Response(
-            {
-                'error': 'No podés crear cuidadores directamente desde este endpoint.',
-                'message': 'Usá POST /api/auth/register/ con role="Caregiver"',
-                'hint': 'Ejemplo: {"email": "...", "password": "...", "role": "Caregiver", "hourly_rate": "15.00"}'
-            },
-            status=status.HTTP_405_METHOD_NOT_ALLOWED
-        )
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return CaregiverCreateSerializer
+        elif self.action == 'list':
+            return CaregiverListSerializer
+        return CaregiverDetailSerializer
     
-    # Opcional: endpoint personalizado para buscar cuidadores verificados
-    @action(detail=False, methods=['get'], url_path='verified')
-    def verified_caregivers(self, request):
+    def get_permissions(self):
+        # Solo admins pueden crear cuidadores
+        if self.action == 'create':
+            return [IsAuthenticated()]
+        return super().get_permissions()
+    
+    @transaction.atomic
+    def create(self, request, *args, **kwargs):
         """
-        GET /api/caregivers/verified/
-        Devuelve solo cuidadores verificados.
+        POST /api/caregivers/
+        Crea un nuevo cuidador (solo Admin).
         """
-        verified = self.queryset.filter(is_verified=True)
-        serializer = self.get_serializer(verified, many=True)
+        # Verificar que sea admin
+        if request.user.role != 'Admin':
+            return Response(
+                {'error': 'Solo administradores pueden crear cuidadores'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        data = serializer.validated_data
+        
+        # Crear usuario
+        user = User.objects.create_user(
+            email=data['email'],
+            password=data['password'],
+            first_name=data['first_name'],
+            last_name=data['last_name'],
+            phone_number=data.get('phone_number', ''),
+            role='Caregiver'
+        )
+        
+        # Crear perfil de cuidador
+        caregiver = Caregiver.objects.create(
+            user=user,
+            hourly_rate=data['hourly_rate'],
+            specialty_id=data.get('specialty_id'),
+            bank_account=data.get('bank_account', '')
+        )
+        
+        return Response({
+            'success': True,
+            'message': 'Cuidador creado exitosamente',
+            'data': {
+                'id': user.id,
+                'full_name': user.full_name,
+                'email': user.email,
+                'specialty': caregiver.specialty.name if caregiver.specialty else None,
+                'hourly_rate': str(caregiver.hourly_rate)
+            }
+        }, status=status.HTTP_201_CREATED)
+    
+    @action(detail=False, methods=['get'], url_path='specialties')
+    def list_specialties(self, request):
+        """
+        GET /api/caregivers/specialties/
+        Lista todas las especialidades disponibles.
+        """
+        specialties = Specialty.objects.all()
+        serializer = SpecialtySerializer(specialties, many=True)
         return Response(serializer.data)
     
-    # Opcional: obtener el cuidador del usuario autenticado
+    @action(detail=False, methods=['get'], url_path='verified')
+    def verified_caregivers(self, request):
+        verified = self.queryset.filter(is_verified=True)
+        serializer = CaregiverListSerializer(verified, many=True)
+        return Response(serializer.data)
+    
     @action(detail=False, methods=['get'], url_path='me')
     def my_caregiver_profile(self, request):
-        """
-        GET /api/caregivers/me/
-        Devuelve el perfil de cuidador del usuario autenticado.
-        Solo funciona si el usuario es Caregiver.
-        """
         if request.user.role != 'Caregiver':
             return Response(
                 {'error': 'No tenés un perfil de cuidador'},
@@ -67,7 +120,7 @@ class CaregiverViewSet(viewsets.ModelViewSet):
         
         try:
             caregiver = Caregiver.objects.get(user=request.user)
-            serializer = self.get_serializer(caregiver)
+            serializer = CaregiverDetailSerializer(caregiver)
             return Response(serializer.data)
         except Caregiver.DoesNotExist:
             return Response(

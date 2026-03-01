@@ -1,8 +1,14 @@
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+// src/App.jsx
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+
+import { AuthProvider } from './core/context/AuthContext';
+import ProtectedRoute from './core/components/ProtectedRoute';
+
 import Login from './pages/login/Login';
 import Register from './pages/register/Register';
 
-import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminDashboard from './pages/admin/AdminDashboard'; 
 import CaregiverDashboard from './pages/caregiver/CaregiverDashboard';
 import FamilyDashboard from './pages/family/FamilyDashboard';
 
@@ -12,7 +18,6 @@ import PagosPage from './pages/admin/pagos/pagos';
 import DocumentosPage from './pages/admin/documentos/documentos';
 import ReportesPage from './pages/admin/reportes/Reportes';
 import ConfiguracionPage from './pages/admin/Configuracion/configuracion';
-import { useState } from 'react';
 
 function AppContent() {
   const location = useLocation();
@@ -29,97 +34,114 @@ function AppContent() {
 
   return (
     <Routes>
-      {/* Rutas sin sidebar */}
-      <Route path="/" element={<Login />} />
+      {/* Rutas públicas (sin sidebar) */}
+      <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
-      {/* Rutas con sidebar */}
-      {requiresSidebar && (
-        <>
-          <Route 
-            path="/admin" 
-            element={
-              <AdminDashboard 
-                sidebarCollapsed={sidebarCollapsed} 
-                toggleSidebar={toggleSidebar} 
-              /> 
-            } 
-          />
-          <Route 
-            path="/admin/cuidadores" 
-            element={
-              <CuidadoresPage 
-                sidebarCollapsed={sidebarCollapsed} 
-                toggleSidebar={toggleSidebar} 
-              /> 
-            } 
-          />
-          <Route 
-            path="/admin/pacientes" 
-            element={
-              <PacientesPage 
-                sidebarCollapsed={sidebarCollapsed} 
-                toggleSidebar={toggleSidebar} 
-              /> 
-            } 
-          />
-          <Route 
-            path="/admin/pagos" 
-            element={
-              <PagosPage 
-                sidebarCollapsed={sidebarCollapsed} 
-                toggleSidebar={toggleSidebar} 
-              /> 
-            } 
-          />
-          <Route 
-            path="/admin/documentos" 
-            element={
-              <DocumentosPage 
-                sidebarCollapsed={sidebarCollapsed} 
-                toggleSidebar={toggleSidebar} 
-              /> 
-            } 
-          />
-          <Route 
-            path="/admin/reportes" 
-            element={
-              <ReportesPage 
-                sidebarCollapsed={sidebarCollapsed} 
-                toggleSidebar={toggleSidebar} 
-              /> 
-            } 
-          />
-          <Route 
-            path="/admin/configuracion" 
-            element={
-              <ConfiguracionPage 
-                sidebarCollapsed={sidebarCollapsed} 
-                toggleSidebar={toggleSidebar} 
-              /> 
-            } 
-          />
-          <Route 
-            path="/caregiver" 
-            element={
-              <CaregiverDashboard 
-                sidebarCollapsed={sidebarCollapsed} 
-                toggleSidebar={toggleSidebar} 
-              /> 
-            } 
-          />
-          <Route 
-            path="/family" 
-            element={
-              <FamilyDashboard 
-                sidebarCollapsed={sidebarCollapsed} 
-                toggleSidebar={toggleSidebar} 
-              /> 
-            } 
-          />
-        </>
-      )}
+      {/* Rutas protegidas con sidebar */}
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute roles={['Admin']}>
+            <AdminDashboard 
+              sidebarCollapsed={sidebarCollapsed} 
+              toggleSidebar={toggleSidebar} 
+            />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/cuidadores"
+        element={
+          <ProtectedRoute roles={['Admin']}>
+            <CuidadoresPage 
+              sidebarCollapsed={sidebarCollapsed} 
+              toggleSidebar={toggleSidebar} 
+            />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/pacientes"
+        element={
+          <ProtectedRoute roles={['Admin']}>
+            <PacientesPage 
+              sidebarCollapsed={sidebarCollapsed} 
+              toggleSidebar={toggleSidebar} 
+            />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/pagos"
+        element={
+          <ProtectedRoute roles={['Admin']}>
+            <PagosPage 
+              sidebarCollapsed={sidebarCollapsed} 
+              toggleSidebar={toggleSidebar} 
+            />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/documentos"
+        element={
+          <ProtectedRoute roles={['Admin']}>
+            <DocumentosPage 
+              sidebarCollapsed={sidebarCollapsed} 
+              toggleSidebar={toggleSidebar} 
+            />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/reportes"
+        element={
+          <ProtectedRoute roles={['Admin']}>
+            <ReportesPage 
+              sidebarCollapsed={sidebarCollapsed} 
+              toggleSidebar={toggleSidebar} 
+            />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/configuracion"
+        element={
+          <ProtectedRoute roles={['Admin']}>
+            <ConfiguracionPage 
+              sidebarCollapsed={sidebarCollapsed} 
+              toggleSidebar={toggleSidebar} 
+            />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/caregiver"
+        element={
+          <ProtectedRoute roles={['Caregiver']}>
+            <CaregiverDashboard 
+              sidebarCollapsed={sidebarCollapsed} 
+              toggleSidebar={toggleSidebar} 
+            />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/family"
+        element={
+          <ProtectedRoute roles={['Patient']}>
+            <FamilyDashboard 
+              sidebarCollapsed={sidebarCollapsed} 
+              toggleSidebar={toggleSidebar} 
+            />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Ruta por defecto */}
+      <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );
 }
@@ -127,7 +149,9 @@ function AppContent() {
 export default function App() {
   return (
     <BrowserRouter>
-      <AppContent />
+      <AuthProvider>  {/* ← ESTO FALTABA - envuelve toda la app */}
+        <AppContent />
+      </AuthProvider>
     </BrowserRouter>
   );
 }

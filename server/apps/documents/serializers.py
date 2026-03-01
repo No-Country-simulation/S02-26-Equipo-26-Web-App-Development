@@ -33,12 +33,16 @@ class DocumentSerializer(serializers.ModelSerializer):
 
 class DocumentCreateSerializer(serializers.ModelSerializer):
     """
-    Serializer para crear documentos (cuidador o admin).
-    No incluye campos de verificación.
+    Serializer para crear documentos.
+    - Cuidador: caregiver se asigna automáticamente (no enviar en JSON)
+    - Admin: puede enviar caregiver_id para crear doc en nombre de otro
     """
+    # Campo opcional solo para admin
+    caregiver_id = serializers.IntegerField(required=False, write_only=True)
+    
     class Meta:
         model = Document
-        fields = ['caregiver', 'file_url', 'document_type', 'expiry_date']
+        fields = ['caregiver_id', 'file_url', 'document_type', 'expiry_date']
     
     def validate_document_type(self, value):
         valid_types = [choice[0] for choice in DocumentType.choices]
@@ -47,6 +51,19 @@ class DocumentCreateSerializer(serializers.ModelSerializer):
                 f"Tipo inválido. Opciones: {', '.join(valid_types)}"
             )
         return value
+    
+    def validate(self, data):
+        """
+        Validar que admin envía caregiver_id si es admin.
+        Cuidador no necesita enviarlo (se asigna en el view).
+        """
+        request = self.context.get('request')
+        if request and request.user.role == 'Admin':
+            if 'caregiver_id' not in data:
+                raise serializers.ValidationError({
+                    'caregiver_id': 'El admin debe especificar el caregiver_id'
+                })
+        return data
 
 
 class DocumentVerificationSerializer(serializers.ModelSerializer):
